@@ -1,0 +1,16 @@
+### create consumer
+POST http://localhost:8080/consumer
+Content-Type: application/json
+
+{
+  "topicName": "thing1"
+}
+
+### list consumer
+GET http://localhost:8080/consumer
+
+### get consumer
+GET http://localhost:8080/consumer/thing1
+
+### delete consumer
+DELETE http://localhost:8080/consumer/thing1
