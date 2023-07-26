@@ -11,18 +11,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 @Slf4j
 @RestController
 @RequestMapping("/consumer")
 public class ConsumerController {
     private final Map<String, KafkaMessageListenerContainer<String, String>> consumerMap;
-    private final ConsumerFactoryComponent consumerFactory;
+    private final ConsumerFactoryConfig consumerFactory;
 
-    public ConsumerController(ConsumerFactoryComponent consumerFactoryComponent) {
+    public ConsumerController(ConsumerFactoryConfig consumerFactoryConfig) {
         this.consumerMap = new ConcurrentHashMap<>();
-        this.consumerFactory = consumerFactoryComponent;
+        this.consumerFactory = consumerFactoryConfig;
     }
 
     @GetMapping

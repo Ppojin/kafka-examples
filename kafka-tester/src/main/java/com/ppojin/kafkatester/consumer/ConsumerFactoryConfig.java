@@ -6,26 +6,26 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.kafka.listener.MessageListener;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
-@Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class ConsumerFactoryComponent {
+@Configuration
+public class ConsumerFactoryConfig {
     private final String bootstrapServers;
     private final String consumerGroupId;
     private final String instanceId;
     private final DefaultKafkaConsumerFactory<String, String> consumerFactory;
 
-    public ConsumerFactoryComponent(
+    public ConsumerFactoryConfig(
             @Value("${kafka.bootstrap_servers:kafka0:9092,kafka1:9093,kafka2:9094}") String bootstrapServers,
             @Value("${kafka.consumer.group_id:test-consumer}") String consumerGroupId,
             @Value("${kafka.consumer.instance_id:test-instance}") String instanceId
@@ -37,7 +37,7 @@ public class ConsumerFactoryComponent {
         log.info("consumer factory created ({})", instanceId);
     }
 
-    private Map<String, Object> getConsumerProps(){
+    public Map<String, Object> getConsumerProps(){
         String randStr = UUID.randomUUID().toString().substring(0, 4);
         return Map.ofEntries(
                 Map.entry(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers),
@@ -54,7 +54,7 @@ public class ConsumerFactoryComponent {
                 topicName
         );
         containerProperties.setMessageListener(new MyListener());
-        return new KafkaMessageListenerContainer<String, String>(
+        return new KafkaMessageListenerContainer<>(
                 this.consumerFactory,
                 containerProperties
         );
@@ -66,4 +66,5 @@ public class ConsumerFactoryComponent {
             log.info("{}, {}", data.key(), data.value());
         }
     }
+
 }
