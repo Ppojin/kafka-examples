@@ -45,7 +45,7 @@ public class ConsumerController {
     }
 
     @GetMapping(value="/{topicName}", produces = "application/json")
-    public ResponseEntity<String> get(@PathVariable String topicName) throws InterruptedException {
+    public ResponseEntity<String> get(@PathVariable String topicName) {
         if (!consumerMap.containsKey(topicName)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
