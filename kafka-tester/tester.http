@@ -2,36 +2,39 @@
 POST http://localhost:8080/consumer
 Content-Type: application/json
 
-{"topicName": "MR_MP"}
+{"topicName": "SR_SP"}
 
 ### create consumer2
 POST http://localhost:8081/consumer
 Content-Type: application/json
 
-{"topicName": "MR_MP"}
+{"topicName": "SR_SP"}
 
 ### list consumer
 GET http://localhost:8080/consumer
 
 ### get consumer
-GET http://localhost:8080/consumer/MR_MP
+GET http://localhost:8080/consumer/SR_SP
 
 ### delete consumer
-DELETE http://localhost:8080/consumer/MR_MP
+DELETE http://localhost:8080/consumer/SR_SP
 
 ### produce message
-POST http://localhost:8080/producer/MR_MP
+POST http://localhost:8080/producer/2R_SP
 Content-Type: application/json
 
-[
-  {"key": "a", "contents": "a"},
-  {"key": "b", "contents": "b"},
-  {"key": "c", "contents": "c"},
-  {"key": "d", "contents": "d"},
-  {"key": "e", "contents": "e"},
-  {"key": "f", "contents": "f"},
-  {"key": "g", "contents": "g"},
-  {"key": "h", "contents": "h"},
-  {"key": "j", "contents": "j"},
-  {"key": "l", "contents": "l"}
-]
+{
+  "acks": "0",
+  "messages": [
+    {"key": "a", "contents": "a"},
+    {"key": "b", "contents": "b"},
+    {"key": "c", "contents": "c"},
+    {"key": "d", "contents": "d"},
+    {"key": "e", "contents": "e"},
+    {"key": "f", "contents": "f"},
+    {"key": "g", "contents": "g"},
+    {"key": "h", "contents": "h"},
+    {"key": "j", "contents": "j"},
+    {"key": "l", "contents": "l"}
+  ]
+}

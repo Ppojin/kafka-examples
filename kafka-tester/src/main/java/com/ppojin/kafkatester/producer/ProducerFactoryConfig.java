@@ -28,22 +28,30 @@ public class ProducerFactoryConfig {
         this.bootstrapServers = bootstrapServers;
     }
 
-    public Map<String, Object> producerConfigs() {
+    public Map<String, Object> producerConfigs(String acks) {
         return Map.ofEntries(
-                Map.entry(ProducerConfig.CLIENT_ID_CONFIG, "customProducer"),
+                Map.entry(ProducerConfig.ACKS_CONFIG, acks),
                 Map.entry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers),
                 Map.entry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class),
                 Map.entry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class)
         );
     }
 
-    public ProducerFactory<String, String> producerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerConfigs());
+    public ProducerFactory<String, String> producerFactory(String acks) {
+        return new DefaultKafkaProducerFactory<>(producerConfigs(acks ));
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+    public KafkaTemplate<String, String> kafkaTemplateAckTrue() {
+        return new KafkaTemplate<>(producerFactory("1"));
     }
 
+    @Bean
+    public KafkaTemplate<String, String> kafkaTemplateAckFalse() {
+        return new KafkaTemplate<>(producerFactory("0"));
+    }
+    @Bean
+    public KafkaTemplate<String, String> kafkaTemplateAckAll() {
+        return new KafkaTemplate<>(producerFactory("-1"));
+    }
 }
