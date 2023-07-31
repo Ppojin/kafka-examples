@@ -85,6 +85,16 @@ services:
     networks:
       - ppojin
 
+  zoo_navigator:
+    container_name: zoo_navigator
+    image: elkozmon/zoonavigator:1.1.2
+    ports:
+      - "9000:9000"
+    environment: 
+      HTTP_PORT: 9000
+    networks:
+      - ppojin
+
   kafka-ui:
     image: provectuslabs/kafka-ui:master
     container_name: kafka-ui
