@@ -13,6 +13,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
@@ -26,7 +27,8 @@ public class ProducerController {
     public ProducerController(
             KafkaTemplate<String, String> kafkaTemplateAckTrue,
             KafkaTemplate<String, String> kafkaTemplateAckFalse,
-            KafkaTemplate<String, String> kafkaTemplateAckAll
+            KafkaTemplate<String, String> kafkaTemplateAckAll,
+            KafkaAdmin admin
     ) {
         this.kafkaTemplateAckTrue = kafkaTemplateAckTrue;
         this.kafkaTemplateAckFalse = kafkaTemplateAckFalse;
@@ -43,6 +45,9 @@ public class ProducerController {
             case "0" -> kafkaTemplateAckFalse;
             default -> kafkaTemplateAckAll;
         };
+        log.info("producer: {}", template.getProducerFactory().getConfigurationProperties().get(ProducerConfig.CLIENT_ID_CONFIG));
+
+        long start = System.currentTimeMillis();
         List<List<Object>> results = produceDTO.getMessages().stream()
                 .map((MessageDTO m) -> m.getMessage(topicName))
                 .map(template::send)
@@ -56,7 +61,7 @@ public class ProducerController {
                         )
                 ))
                 .toList();
-        log.info("produce result: {}", results);
+        log.info("({}ms) produce result: {}", System.currentTimeMillis() - start, results);
 
         return ResponseEntity
                 .created(URI.create("/"+topicName))

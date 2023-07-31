@@ -30,10 +30,13 @@ public class ProducerFactoryConfig {
 
     public Map<String, Object> producerConfigs(String acks) {
         return Map.ofEntries(
+                Map.entry(ProducerConfig.CLIENT_ID_CONFIG, String.format("producer(%s)", acks)),
                 Map.entry(ProducerConfig.ACKS_CONFIG, acks),
                 Map.entry(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers),
                 Map.entry(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class),
-                Map.entry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class)
+                Map.entry(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class),
+                Map.entry(ProducerConfig.LINGER_MS_CONFIG, 0), // default: 0
+                Map.entry(ProducerConfig.BATCH_SIZE_CONFIG, 16384) // default: 16384
         );
     }
 

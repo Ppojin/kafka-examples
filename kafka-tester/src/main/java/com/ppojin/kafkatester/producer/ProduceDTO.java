@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ProduceDTO {
     @Getter @Setter
-    private String acks = "0";
+    private String acks = "-1";
 
     @Getter @Setter
     private List<MessageDTO> messages;

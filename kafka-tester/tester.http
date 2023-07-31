@@ -24,7 +24,7 @@ POST http://localhost:8080/producer/2R_SP
 Content-Type: application/json
 
 {
-  "acks": "0",
+  "acks": "-1",
   "messages": [
     {"key": "a", "contents": "a"},
     {"key": "b", "contents": "b"},
