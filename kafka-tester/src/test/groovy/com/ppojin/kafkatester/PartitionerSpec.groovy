@@ -1,13 +1,12 @@
 package com.ppojin.kafkatester
 
 import org.apache.kafka.clients.producer.internals.BuiltInPartitioner
-import org.apache.kafka.clients.producer.internals.DefaultPartitioner
 import org.apache.kafka.common.utils.Utils
 import spock.lang.Specification
 
 class PartitionerSpec extends Specification {
 
-    def "DefaultPartitioner#partition"() {
+    def "partitionerTest"() {
         expect:
         int temp1 = Utils.murmur2(key.getBytes())
         int temp2 = Utils.toPositive(temp1)
@@ -25,5 +24,10 @@ class PartitionerSpec extends Specification {
         "c" | 10             | 4
         "d" | 10             | 3
         "e" | 10             | 4
+        "f" | 10             | 5
+        "g" | 10             | 3
+        "h" | 10             | 5
+        "i" | 10             | 8
+        "j" | 10             | 6
     }
 }

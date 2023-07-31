@@ -26,7 +26,7 @@ public class ConsumerFactoryConfig {
     private final DefaultKafkaConsumerFactory<String, String> consumerFactory;
 
     public ConsumerFactoryConfig(
-            @Value("${kafka.bootstrap_servers:kafka0:9092,kafka1:9093,kafka2:9094}") String bootstrapServers,
+            @Value("${kafka.bootstrap_servers:localhost:9092}") String bootstrapServers,
             @Value("${kafka.consumer.group_id:test-consumer}") String consumerGroupId,
             @Value("${kafka.consumer.instance_id:test-instance}") String instanceId
     ) {

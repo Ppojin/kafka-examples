@@ -1,3 +1,10 @@
+```
+docker pull confluentinc/cp-kafka:7.4.1  \
+    confluentinc/cp-zookeeper:7.4.1 \
+    provectuslabs/kafka-ui:master \
+    gradle:8.2-jdk17 \
+    openjdk:17-ea-slim
+```
 
 ---
 
@@ -10,6 +17,10 @@ KAFKA_VERSION=7.2.6.arm64
 ```sh
 docker-compose -f docker-compose.zookeeper.yaml up -d
 ```
+
+---
+
+[external host](https://levelup.gitconnected.com/kafka-primer-for-docker-how-to-setup-kafka-start-messaging-and-monitor-broker-metrics-in-docker-b4e018e205d1)
 
 ---
 

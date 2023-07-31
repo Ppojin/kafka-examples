@@ -8,6 +8,10 @@ plugins {
 group = 'com.ppojin'
 version = '0.0.1-SNAPSHOT'
 
+springBoot {
+    mainClass = 'com.ppojin.kafkatester.KafkaTesterApplication'
+}
+
 java {
 	sourceCompatibility = '17'
 }
@@ -19,6 +23,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 	// lombok
 	compileOnly 'org.projectlombok:lombok:1.18.28'
@@ -26,7 +31,6 @@ dependencies {
 
 	// junit
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.kafka:spring-kafka-test'
 
 	// spock
 	testImplementation 'org.spockframework:spock-core:2.4-M1-groovy-4.0'

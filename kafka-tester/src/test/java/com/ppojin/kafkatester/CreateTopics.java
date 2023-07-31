@@ -23,7 +23,8 @@ public class CreateTopics {
         @Bean
         public KafkaAdmin admin() {
             Map<String, Object> configs = new HashMap<>();
-            configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092,localhost:9093,localhost:9094");
+            configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092,localhost:29092,localhost:39092");
+            configs.put(AdminClientConfig.CLIENT_ID_CONFIG, "create_topic");
             return new KafkaAdmin(configs);
         }
 

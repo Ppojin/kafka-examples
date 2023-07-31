@@ -1,7 +1,7 @@
 services:
   kafka1:
     container_name: kafka1
-    image: confluentinc/cp-kafka:${KAFKA_VERSION}
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
     # restart: on-failure
     ports:
       - "19092:19092"
@@ -25,7 +25,7 @@ services:
 
   kafka2:
     container_name: kafka2
-    image: confluentinc/cp-kafka:${KAFKA_VERSION}
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
     # restart: on-failure
     ports:
       - "29092:29092"
@@ -49,7 +49,7 @@ services:
 
   kafka3:
     container_name: kafka3
-    image: confluentinc/cp-kafka:${KAFKA_VERSION}
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
     # restart: on-failure
     ports:
       - "39092:39092"
@@ -73,7 +73,7 @@ services:
 
   zookeeper:
     container_name: zookeeper
-    image: confluentinc/cp-zookeeper:${KAFKA_VERSION}
+    image: confluentinc/cp-zookeeper:${CONFLUENT_VERSION}
     # volumes:
     #   - "./volume/zookeeper/data:/data"
     #   - "./volume/zookeeper/logs:/datalog"

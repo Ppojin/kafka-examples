@@ -23,7 +23,7 @@ public class ProducerFactoryConfig {
     private final String bootstrapServers;
 
     public ProducerFactoryConfig(
-            @Value("${kafka.bootstrap_servers:localhost:19092,localhost:29092,localhost:39092}") String bootstrapServers
+            @Value("${kafka.bootstrap_servers:localhost:9092}") String bootstrapServers
     ) {
         this.bootstrapServers = bootstrapServers;
     }

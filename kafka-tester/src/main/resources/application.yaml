@@ -2,3 +2,6 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+
+kafka:
+  bootstrap_servers: localhost:19092,localhost:29092,localhost:39092
