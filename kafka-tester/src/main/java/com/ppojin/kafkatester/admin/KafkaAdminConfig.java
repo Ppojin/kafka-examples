@@ -62,8 +62,8 @@ public class KafkaAdminConfig {
         return TopicBuilder.name("MR_MP")
                 .partitions(10)
                 .replicas(3)
-                .compact()
-                .config(TopicConfig.COMPRESSION_TYPE_CONFIG, "zstd")
+//                .compact()
+//                .config(TopicConfig.COMPRESSION_TYPE_CONFIG, "zstd")
                 .build();
     }
 }

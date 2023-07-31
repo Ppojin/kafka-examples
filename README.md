@@ -30,3 +30,15 @@ docker-compose -f docker-compose.zookeeper.yaml up -d
 docker-compose -f docker-compose.app.yaml up -d
 ```
 
+## see app log
+```sh
+docker logs -f app1
+docker logs -f app2
+```
+
+## clean examples
+```sh
+docker-compose -f docker-compose.app.yaml down
+docker-compose -f docker-compose.zookeeper.yaml down
+docker rmi kafka-examples-app1 kafka-examples-app2
+```
