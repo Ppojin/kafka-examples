@@ -1,4 +1,4 @@
-package com.ppojin.kafkatester.admin;
+package com.ppojin.kafkatester.config;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -26,7 +26,7 @@ public class KafkaAdminConfig {
     }
 
     @Bean
-    public NewTopic topic1() {
+    public NewTopic singleReplicaSinglePartition() {
         return TopicBuilder.name("SR_SP")
                 .partitions(1)
                 .replicas(1)
@@ -34,7 +34,7 @@ public class KafkaAdminConfig {
     }
 
     @Bean
-    public NewTopic topic2() {
+    public NewTopic singleReplicaMultiPartition() {
         return TopicBuilder.name("SR_MP")
                 .partitions(10)
                 .replicas(1)
@@ -42,7 +42,7 @@ public class KafkaAdminConfig {
     }
 
     @Bean
-    public NewTopic topic3() {
+    public NewTopic multiReplicaSinglePartition() {
         return TopicBuilder.name("MR_SP")
                 .partitions(1)
                 .replicas(3)
@@ -50,7 +50,7 @@ public class KafkaAdminConfig {
     }
 
     @Bean
-    public NewTopic topic6() {
+    public NewTopic twoReplicasSinglePartition() {
         return TopicBuilder.name("2R_SP")
                 .partitions(1)
                 .replicas(2)
@@ -58,12 +58,20 @@ public class KafkaAdminConfig {
     }
 
     @Bean
-    public NewTopic topic4() {
+    public NewTopic multiReplicaMultiPartition() {
         return TopicBuilder.name("MR_MP")
                 .partitions(10)
                 .replicas(3)
 //                .compact()
 //                .config(TopicConfig.COMPRESSION_TYPE_CONFIG, "zstd")
+                .build();
+    }
+
+    @Bean
+    public NewTopic orderTopic() {
+        return TopicBuilder.name("order")
+                .partitions(10)
+                .replicas(3)
                 .build();
     }
 }

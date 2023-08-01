@@ -1,0 +1,27 @@
+### order
+POST http://localhost:8080/order
+Content-Type: application/json
+
+{
+  "messages": [
+    {"userId": "a", "productId": "Home run ball", "count": 3},
+    {"userId": "b", "productId": "Pepsi", "count": 10},
+    {"userId": "c", "productId": "Banana", "count": 3},
+    {"userId": "d", "productId": "Neoguri", "count": 10},
+    {"userId": "e", "productId": "cass", "count": 10}
+  ]
+}
+
+### order nullkey
+POST http://localhost:8080/order
+Content-Type: application/json
+
+{
+  "messages": [
+    {"productId": "a", "count": 10},
+    {"productId": "a", "count": 10},
+    {"productId": "b", "count": 10},
+    {"productId": "b", "count": 10},
+    {"productId": "b", "count": 10}
+  ]
+}

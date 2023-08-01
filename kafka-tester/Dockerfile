@@ -20,10 +20,12 @@ EXPOSE 8080
 
 ENV SERVER_PORT=8080
 ENV KAFKA_BOOTSTRAP_SERVERS=kafka0:9092,kafka1:9093,kafka2:9094
+ENV SCHEMA_REGISTRY=http://localhost:8081
 
 # root 대신 nobody 권한으로 실행
 USER nobody
 ENTRYPOINT "java" "-jar" \
     "-Dserver.port=${SERVER_PORT}" \
     "-Dkafka.bootstrap_servers=${KAFKA_BOOTSTRAP_SERVERS}" \
+    "-Dkafka.schema_registry=${SCHEMA_REGISTRY}" \
     "kafka-tester-0.0.1-SNAPSHOT.jar"

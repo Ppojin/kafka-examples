@@ -1,14 +1,14 @@
-package com.ppojin.kafkatester.producer;
+package com.ppojin.kafkatester.tester.model;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
-public class ProduceDTO {
+public class StringRequestBodyDTO {
     @Getter @Setter
     private String acks = "-1";
 
     @Getter @Setter
-    private List<MessageDTO> messages;
+    private List<StringMessageDTO> messages;
 }

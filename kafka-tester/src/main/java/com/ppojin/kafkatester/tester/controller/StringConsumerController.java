@@ -1,5 +1,7 @@
-package com.ppojin.kafkatester.consumer;
+package com.ppojin.kafkatester.tester.controller;
 
+import com.ppojin.kafkatester.config.ConsumerFactoryConfig;
+import com.ppojin.kafkatester.tester.model.StringConsumerDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +17,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RestController
 @RequestMapping("/consumer")
-public class ConsumerController {
+public class StringConsumerController {
     private final Map<String, KafkaMessageListenerContainer<String, String>> consumerMap;
     private final ConsumerFactoryConfig consumerFactory;
 
-    public ConsumerController(ConsumerFactoryConfig consumerFactoryConfig) {
+    public StringConsumerController(ConsumerFactoryConfig consumerFactoryConfig) {
         this.consumerMap = new ConcurrentHashMap<>();
         this.consumerFactory = consumerFactoryConfig;
     }
@@ -30,7 +32,7 @@ public class ConsumerController {
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<String> add(@RequestBody ConsumerDTO consumerDTO){
+    public ResponseEntity<String> add(@RequestBody StringConsumerDTO consumerDTO){
         if (consumerMap.containsKey(consumerDTO.getTopicName())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }

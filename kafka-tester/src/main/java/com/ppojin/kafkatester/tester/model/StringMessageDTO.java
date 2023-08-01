@@ -1,10 +1,10 @@
-package com.ppojin.kafkatester.producer;
+package com.ppojin.kafkatester.tester.model;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-public class MessageDTO {
+public class StringMessageDTO {
     @Getter @Setter
     private String key;
 

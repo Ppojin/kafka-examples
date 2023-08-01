@@ -1,3 +1,37 @@
+### produce message (acks=0)
+POST http://localhost:8080/producer/MR_MP
+Content-Type: application/json
+
+{
+  "acks": "0",
+  "messages": [
+    {"key": "a", "contents": "ack-0"}
+  ]
+}
+
+### produce message (acks=1)
+POST http://localhost:8080/producer/2R_SP
+Content-Type: application/json
+
+{
+  "acks": "1",
+  "messages": [
+    {"key": "a", "contents": "ack-1"}
+  ]
+}
+
+
+### produce message (acks=all)
+POST http://localhost:8080/producer/MR_MP
+Content-Type: application/json
+
+{
+  "acks": "-1",
+  "messages": [
+    {"contents": "ack-all"}
+  ]
+}
+
 ### produce message
 POST http://localhost:8080/producer/MR_MP
 Content-Type: application/json
@@ -5,16 +39,16 @@ Content-Type: application/json
 {
   "acks": "-1",
   "messages": [
-    {"key": "a", "contents": "a"},
-    {"key": "b", "contents": "b"},
-    {"key": "c", "contents": "c"},
-    {"key": "d", "contents": "d"},
-    {"key": "e", "contents": "e"},
-    {"key": "f", "contents": "f"},
-    {"key": "g", "contents": "g"},
-    {"key": "h", "contents": "h"},
-    {"key": "j", "contents": "j"},
-    {"key": "l", "contents": "l"}
+    {"key": "a", "contents": "Mokujin"},
+    {"key": "b", "contents": "Bryan"},
+    {"key": "c", "contents": "Law"},
+    {"key": "d", "contents": "Kazuya"},
+    {"key": "e", "contents": "Heihachi"},
+    {"key": "f", "contents": "Jin"},
+    {"key": "g", "contents": "Paul"},
+    {"key": "h", "contents": "Yoshimitsu"},
+    {"key": "j", "contents": "Steve"},
+    {"key": "l", "contents": "Hwoarang"}
   ]
 }
 
@@ -34,7 +68,7 @@ Content-Type: application/json
 GET http://localhost:8080/consumer
 
 ### get consumer
-GET http://localhost:8080/consumer/SR_SP
+GET http://localhost:8080/consumer/MR_MP
 
 ### delete consumer
-DELETE http://localhost:8080/consumer/SR_SP
+DELETE http://localhost:8080/consumer/MR_MP

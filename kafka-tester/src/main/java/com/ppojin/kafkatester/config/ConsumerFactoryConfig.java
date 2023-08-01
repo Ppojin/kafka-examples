@@ -1,4 +1,4 @@
-package com.ppojin.kafkatester.consumer;
+package com.ppojin.kafkatester.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -53,18 +53,12 @@ public class ConsumerFactoryConfig {
         ContainerProperties containerProperties = new ContainerProperties(
                 topicName
         );
-        containerProperties.setMessageListener(new MyListener());
+        containerProperties.setMessageListener(
+                (MessageListener<String, String>) data -> log.info("{}, {}", data.key(), data.value())
+        );
         return new KafkaMessageListenerContainer<>(
                 this.consumerFactory,
                 containerProperties
         );
     }
-
-    private static class MyListener implements MessageListener<String, String> {
-        @Override
-        public void onMessage(ConsumerRecord<String, String> data) {
-            log.info("{}, {}", data.key(), data.value());
-        }
-    }
-
 }

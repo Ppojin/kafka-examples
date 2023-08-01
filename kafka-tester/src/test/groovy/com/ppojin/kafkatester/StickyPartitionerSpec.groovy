@@ -4,9 +4,9 @@ import org.apache.kafka.clients.producer.internals.BuiltInPartitioner
 import org.apache.kafka.common.utils.Utils
 import spock.lang.Specification
 
-class PartitionerSpec extends Specification {
+class StickyPartitionerSpec extends Specification {
 
-    def "partitionerTest"() {
+    def "StickyPartitionerTest"() {
         expect:
         int temp1 = Utils.murmur2(key.getBytes())
         int temp2 = Utils.toPositive(temp1)
