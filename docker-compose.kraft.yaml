@@ -13,7 +13,7 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,BROKER:PLAINTEXT,EXTERNAL:PLAINTEXT
-      KAFKA_LISTENERS: CONTROLLER://kafka1:9292,INTERNAL://kafka1:9092,BROKER://:9392,EXTERNAL://:29092
+      KAFKA_LISTENERS: CONTROLLER://kafka1:9292,INTERNAL://kafka1:9092,BROKER://:9392,EXTERNAL://:19092
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka1:9092,BROKER://kafka1:9392,EXTERNAL://localhost:19092
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka1:9292,2@kafka2:9292,3@kafka3:9292
 
@@ -108,7 +108,7 @@ services:
     image: provectuslabs/kafka-ui:${KAFKA_UI_VERSION}
     container_name: kafka-ui
     ports:
-      - "8080:8080"
+      - "9090:8080"
     environment:
       KAFKA_CLUSTERS_0_NAME: "kafka"
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka1:9092,kafka2:9093,kafka3:9094"
@@ -123,10 +123,6 @@ services:
     image: confluentinc/cp-schema-registry:${CONFLUENT_VERSION}
     hostname: schema-registry
     container_name: schema-registry
-    depends_on:
-      - kafka1
-      - kafka2
-      - kafka3
     ports:
       - "8081:8081"
     environment:
