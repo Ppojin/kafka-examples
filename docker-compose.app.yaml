@@ -9,6 +9,7 @@ services:
     environment:
       SERVER_PORT: 8080
       KAFKA_BOOTSTRAP_SERVERS: kafka1:9092,kafka2:9092,kafka3:9092
+      SCHEMA_REGISTRY: http://schema-registry:8081
     networks:
       - ppojin
 
@@ -17,10 +18,11 @@ services:
     build: 
       context: ./kafka-tester
       dockerfile: Dockerfile
-    ports: [ "8081:8080" ]
+    ports: [ "8082:8080" ]
     environment:
       SERVER_PORT: 8080
       KAFKA_BOOTSTRAP_SERVERS: kafka1:9092,kafka2:9092,kafka3:9092
+      SCHEMA_REGISTRY: http://schema-registry:8081
     networks:
       - ppojin
 

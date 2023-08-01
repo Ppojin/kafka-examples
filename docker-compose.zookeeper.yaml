@@ -2,7 +2,6 @@ services:
   kafka1:
     container_name: kafka1
     image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
-    # restart: on-failure
     ports:
       - "19092:19092"
     environment:
@@ -12,12 +11,14 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_LISTENERS: PLAINTEXT://kafka1:9092,EXTERNAL://:19092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092,EXTERNAL://localhost:19092
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: 1
       KAFKA_MIN_INSYNC_REPLICAS: 2
-    #   KAFKA_LOG_DIRS: /data/kafka
-    # volumes:
-    #   - ./volume/kafka1_data:/data/kafka/
+      KAFKA_LOG_DIRS: /data/kafka
+      KAFKA_LOG4J_LOGGERS: state.change.logger=WARN,kafka.controller=WARN
+    volumes:
+      - ./volume/kafka1_data:/data/kafka/
     depends_on:
       - zookeeper
     networks:
@@ -26,7 +27,6 @@ services:
   kafka2:
     container_name: kafka2
     image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
-    # restart: on-failure
     ports:
       - "29092:29092"
     environment:
@@ -36,12 +36,14 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_LISTENERS: PLAINTEXT://kafka2:9092,EXTERNAL://:29092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9092,EXTERNAL://localhost:29092
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: 1
       KAFKA_MIN_INSYNC_REPLICAS: 2
-    #   KAFKA_LOG_DIRS: /data/kafka
-    # volumes:
-    #   - ./volume/kafka2_data:/data/kafka/
+      KAFKA_LOG_DIRS: /data/kafka
+      KAFKA_LOG4J_LOGGERS: state.change.logger=WARN,kafka.controller=WARN
+    volumes:
+      - ./volume/kafka2_data:/data/kafka/
     depends_on:
       - zookeeper
     networks:
@@ -50,7 +52,6 @@ services:
   kafka3:
     container_name: kafka3
     image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
-    # restart: on-failure
     ports:
       - "39092:39092"
     environment:
@@ -60,25 +61,42 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_LISTENERS: PLAINTEXT://kafka3:9092,EXTERNAL://:39092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:9092,EXTERNAL://localhost:39092
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: 1
       KAFKA_MIN_INSYNC_REPLICAS: 2
-    #   KAFKA_LOG_DIRS: /data/kafka
-    # volumes:
-    #   - ./volume/kafka3_data:/data/kafka/
+      KAFKA_LOG_DIRS: /data/kafka
+      KAFKA_LOG4J_LOGGERS: state.change.logger=WARN,kafka.controller=WARN
+    volumes:
+      - ./volume/kafka3_data:/data/kafka/
     depends_on:
       - zookeeper
+    networks:
+      - ppojin
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:${CONFLUENT_VERSION}
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka1:9092,kafka2:9092,kafka3:9092'
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
     networks:
       - ppojin
 
   zookeeper:
     container_name: zookeeper
     image: confluentinc/cp-zookeeper:${CONFLUENT_VERSION}
-    # volumes:
-    #   - "./volume/zookeeper/data:/data"
-    #   - "./volume/zookeeper/logs:/datalog"
-    ports:
-      - "2181:2181"
+    volumes:
+      - "./volume/zookeeper/data:/data"
+      - "./volume/zookeeper/logs:/datalog"
     environment: 
       ZOOKEEPER_CLIENT_PORT: 2181 
       ZOOKEEPER_TIME_TICK: 2000
@@ -105,6 +123,7 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka1:9092,kafka2:9092,kafka3:9092"
       KAFKA_CLUSTERS_0_ZOOKEEPER: "zookeeper:2181"
       KAFKA_CLUSTERS_0_READONLY: "false"
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8081
     depends_on:
       - kafka1
       - kafka2
