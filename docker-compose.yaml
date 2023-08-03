@@ -93,23 +93,29 @@ services:
 
   zookeeper:
     container_name: zookeeper
-    image: confluentinc/cp-zookeeper:${CONFLUENT_VERSION}
+    image: zookeeper:${ZOOKEEPER_VERSION}
+    ports:
+      - 2181:2181
     volumes:
       - "./volume/zookeeper/data:/data"
-      - "./volume/zookeeper/logs:/datalog"
+      - "./volume/zookeeper/logs:/logs"
+      - "./volume/zookeeper/datalog:/datalog"
     environment: 
-      ZOOKEEPER_CLIENT_PORT: 2181 
-      ZOOKEEPER_TIME_TICK: 2000
+      ZOO_MY_ID: 1
+      ZOO_TICK_TIME: 2000
     networks:
       - ppojin
 
   zoo_navigator:
+    profiles: ["zoo_navi"]
     container_name: zoo_navigator
     image: elkozmon/zoonavigator:1.1.2
     ports:
       - "9000:9000"
     environment: 
       HTTP_PORT: 9000
+    depends_on:
+      - zookeeper
     networks:
       - ppojin
 
@@ -124,6 +130,42 @@ services:
       KAFKA_CLUSTERS_0_ZOOKEEPER: "zookeeper:2181"
       KAFKA_CLUSTERS_0_READONLY: "false"
       KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8081
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+    networks:
+      - ppojin
+
+  app1:
+    profiles: ["app"]
+    container_name: app1
+    build: 
+      context: ./kafka-tester
+      dockerfile: Dockerfile
+    ports: [ "8080:8080" ]
+    environment:
+      SERVER_PORT: 8080
+      KAFKA_BOOTSTRAP_SERVERS: kafka1:9092,kafka2:9092,kafka3:9092
+      SCHEMA_REGISTRY: http://schema-registry:8081
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+    networks:
+      - ppojin
+
+  app2:
+    profiles: ["app"]
+    container_name: app2
+    build: 
+      context: ./kafka-tester
+      dockerfile: Dockerfile
+    ports: [ "8082:8080" ]
+    environment:
+      SERVER_PORT: 8080
+      KAFKA_BOOTSTRAP_SERVERS: kafka1:9092,kafka2:9092,kafka3:9092
+      SCHEMA_REGISTRY: http://schema-registry:8081
     depends_on:
       - kafka1
       - kafka2

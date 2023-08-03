@@ -11,7 +11,7 @@ public class StringMessageDTO {
     @Getter @Setter
     private String contents;
 
-    public ProducerRecord<String, String> getMessage(String topicName){
+    public ProducerRecord<String, String> getMessage(String topicName) {
         return new ProducerRecord<>(topicName, this.key, this.contents);
     }
 }

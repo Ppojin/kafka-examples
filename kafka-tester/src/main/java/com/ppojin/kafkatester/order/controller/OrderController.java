@@ -13,33 +13,36 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RestController
-@RequestMapping("/order")
 public class OrderController {
 
-    private final KafkaTemplate<String, GenericRecord> template;
+    private final KafkaTemplate<String, GenericRecord> avroTemplate;
     private final OrderSchema schema;
+    private final KafkaTemplate<String, Map<String, Object>> jsonTemplate;
 
     public OrderController(
-            KafkaTemplate<String, GenericRecord> kafkaOrderTemplate
+            KafkaTemplate<String, GenericRecord> kafkaOrderTemplate,
+            KafkaTemplate<String, Map<String, Object>> jsonTemplate,
+            OrderSchema orderSchema
     ) {
-        this.template = kafkaOrderTemplate;
-        this.schema = new OrderSchema();
+        this.avroTemplate = kafkaOrderTemplate;
+        this.jsonTemplate = jsonTemplate;
+        this.schema = orderSchema;
     }
 
-    @PostMapping
-    public ResponseEntity<String> produce(
+    @PostMapping("/v1/order")
+    public ResponseEntity<String> produce_v2(
             @RequestBody OrderRequestBodyDTO produceDTO
     ) {
-        log.info("producer: {}", template.getProducerFactory().getConfigurationProperties().get(ProducerConfig.CLIENT_ID_CONFIG));
+        log.info("producer: {}", avroTemplate.getProducerFactory().getConfigurationProperties().get(ProducerConfig.CLIENT_ID_CONFIG));
         long start = System.currentTimeMillis();
         final List<List<Object>> results = produceDTO.getMessages().stream()
-                    .map(orderMessageDTO -> orderMessageDTO.getMessage(schema.getRecord()))
-                    .map(template::send)
+                    .map(orderMessageDTO -> orderMessageDTO.getAvroRecord(schema.getRecord()))
+                    .map(avroTemplate::send)
                     .map(CompletableFuture::join)
                     .map((SendResult<String, GenericRecord> r) -> List.of(
                             r.getRecordMetadata(),
@@ -50,6 +53,32 @@ public class OrderController {
                             )
                     ))
                     .toList();
+        log.info("({}ms) produce result: {}", System.currentTimeMillis() - start, results);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .build();
+    }
+
+    @PostMapping("/v0/order")
+    public ResponseEntity<String> produce_v1(
+            @RequestBody OrderRequestBodyDTO produceDTO
+    ) {
+        log.info("producer: {}", jsonTemplate.getProducerFactory().getConfigurationProperties().get(ProducerConfig.CLIENT_ID_CONFIG));
+        long start = System.currentTimeMillis();
+        final List<List<Object>> results = produceDTO.getMessages().stream()
+                .map(OrderMessageDTO::getJsonRecord)
+                .map(jsonTemplate::send)
+                .map(CompletableFuture::join)
+                .map((SendResult<String, Map<String, Object>> r) -> List.of(
+                        r.getRecordMetadata(),
+                        String.format(
+                                "{\"%s\": \"%s\"}",
+                                r.getProducerRecord().key(),
+                                r.getProducerRecord().value()
+                        )
+                ))
+                .toList();
         log.info("({}ms) produce result: {}", System.currentTimeMillis() - start, results);
 
         return ResponseEntity

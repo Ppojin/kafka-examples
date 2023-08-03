@@ -27,12 +27,12 @@ public class StringConsumerController {
     }
 
     @GetMapping
-    public List<String> List(){
+    public List<String> List() {
         return consumerMap.keySet().stream().toList();
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<String> add(@RequestBody StringConsumerDTO consumerDTO){
+    public ResponseEntity<String> add(@RequestBody StringConsumerDTO consumerDTO) {
         if (consumerMap.containsKey(consumerDTO.getTopicName())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
@@ -42,11 +42,11 @@ public class StringConsumerController {
         consumerMap.put(consumerDTO.getTopicName(), consumer);
 
         return ResponseEntity
-                .created(URI.create("/"+consumerDTO.getTopicName()))
+                .created(URI.create("/" + consumerDTO.getTopicName()))
                 .build();
     }
 
-    @GetMapping(value="/{topicName}", produces = "application/json")
+    @GetMapping(value = "/{topicName}", produces = "application/json")
     public ResponseEntity<String> get(@PathVariable String topicName) {
         if (!consumerMap.containsKey(topicName)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -63,7 +63,7 @@ public class StringConsumerController {
         }
 
         consumerMap.get(topicName).stop();
-        while(consumerMap.get(topicName).isRunning()){
+        while (consumerMap.get(topicName).isRunning()) {
             log.info("'{}' stopping...", topicName);
             TimeUnit.SECONDS.sleep(1);
         }

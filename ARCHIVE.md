@@ -23,3 +23,4 @@ docker-compose -f docker-compose.zookeeper.yaml up -d
 - [KIP-480](https://cwiki.apache.org/confluence/display/KAFKA/KIP-480%3A+Sticky+Partitioner)
 - [KIP-794](https://cwiki.apache.org/confluence/display/KAFKA/KIP-794%3A+Strictly+Uniform+Sticky+Partitioner)
 - [KAFKA-10888](https://issues.apache.org/jira/browse/KAFKA-10888)
+- [Event driven architecture](https://aws.amazon.com/ko/blogs/architecture/best-practices-for-implementing-event-driven-architectures-in-your-organization/)

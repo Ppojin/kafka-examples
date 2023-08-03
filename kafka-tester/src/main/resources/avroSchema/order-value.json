@@ -1,0 +1,9 @@
+{
+    "namespace":"org.apache.avro",
+    "type":"record",
+    "name":"orderRecord",
+    "fields":[
+        {"name":"name","type":"string"},
+        {"name":"count","type":"int"}
+    ]
+}

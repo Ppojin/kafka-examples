@@ -1,5 +1,5 @@
-### order
-POST http://localhost:8080/order
+### Json order
+POST http://localhost:8080/v0/order
 Content-Type: application/json
 
 {
@@ -12,16 +12,16 @@ Content-Type: application/json
   ]
 }
 
-### order nullkey
-POST http://localhost:8080/order
+### Avro order
+POST http://localhost:8080/v1/order
 Content-Type: application/json
 
 {
   "messages": [
-    {"productId": "a", "count": 10},
-    {"productId": "a", "count": 10},
-    {"productId": "b", "count": 10},
-    {"productId": "b", "count": 10},
-    {"productId": "b", "count": 10}
+    {"userId": "a", "productId": "Home run ball", "count": 3},
+    {"userId": "b", "productId": "Pepsi", "count": 10},
+    {"userId": "c", "productId": "Banana", "count": 3},
+    {"userId": "d", "productId": "Neoguri", "count": 10},
+    {"userId": "e", "productId": "cass", "count": 10}
   ]
 }

@@ -37,7 +37,7 @@ public class ConsumerFactoryConfig {
         log.info("consumer factory created ({})", instanceId);
     }
 
-    public Map<String, Object> getConsumerProps(){
+    public Map<String, Object> getConsumerProps() {
         String randStr = UUID.randomUUID().toString().substring(0, 4);
         return Map.ofEntries(
                 Map.entry(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers),
@@ -49,7 +49,7 @@ public class ConsumerFactoryConfig {
         );
     }
 
-    public KafkaMessageListenerContainer<String, String> getConsumer(String topicName){
+    public KafkaMessageListenerContainer<String, String> getConsumer(String topicName) {
         ContainerProperties containerProperties = new ContainerProperties(
                 topicName
         );

@@ -67,6 +67,4 @@ public class StringProducerController {
                 .status(HttpStatus.CREATED)
                 .build();
     }
-
-
 }
