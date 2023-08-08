@@ -5,10 +5,9 @@ Content-Type: application/json
 {
   "messages": [
     {"userId": "a", "productId": "Home run ball", "count": 3},
-    {"userId": "b", "productId": "Pepsi", "count": 10},
+    {"userId": "b", "productId": "Pepsi", "count": 5},
     {"userId": "c", "productId": "Banana", "count": 3},
-    {"userId": "d", "productId": "Neoguri", "count": 10},
-    {"userId": "e", "productId": "cass", "count": 10}
+    {"userId": "d", "productId": "Neoguri", "count": 10}
   ]
 }
 
