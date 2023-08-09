@@ -1,0 +1,213 @@
+services:
+  kafka1:
+    container_name: kafka1
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
+    ports:
+      - "19092:19092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: kafka1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://kafka1:9092,EXTERNAL://:19092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092,EXTERNAL://localhost:19092
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: 1
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_LOG_DIRS: /data/kafka
+      KAFKA_LOG4J_LOGGERS: state.change.logger=WARN,kafka.controller=WARN
+    volumes:
+      - ./volume/kafka1_data:/data/kafka/
+    depends_on:
+      - zookeeper
+    networks:
+      - ppojin
+
+  kafka2:
+    container_name: kafka2
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: kafka2
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://kafka2:9092,EXTERNAL://:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9092,EXTERNAL://localhost:29092
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: 1
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_LOG_DIRS: /data/kafka
+      KAFKA_LOG4J_LOGGERS: state.change.logger=WARN,kafka.controller=WARN
+    volumes:
+      - ./volume/kafka2_data:/data/kafka/
+    depends_on:
+      - zookeeper
+    networks:
+      - ppojin
+
+  kafka3:
+    container_name: kafka3
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
+    ports:
+      - "39092:39092"
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: kafka3
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://kafka3:9092,EXTERNAL://:39092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:9092,EXTERNAL://localhost:39092
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: 1
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_LOG_DIRS: /data/kafka
+      KAFKA_LOG4J_LOGGERS: state.change.logger=WARN,kafka.controller=WARN
+    volumes:
+      - ./volume/kafka3_data:/data/kafka/
+    depends_on:
+      - zookeeper
+    networks:
+      - ppojin
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:${CONFLUENT_VERSION}
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on: ["kafka1", "kafka2", "kafka3"]
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka1:9092,kafka2:9092,kafka3:9092'
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+    networks:
+      - ppojin
+
+  zookeeper:
+    container_name: zookeeper
+    image: zookeeper:${ZOOKEEPER_VERSION}
+    ports:
+      - 2181:2181
+    volumes:
+      - "./volume/zookeeper/data:/data"
+      - "./volume/zookeeper/logs:/logs"
+      - "./volume/zookeeper/datalog:/datalog"
+    environment: 
+      ZOO_MY_ID: 1
+      ZOO_TICK_TIME: 2000
+    networks:
+      - ppojin
+
+  zoo_navigator:
+    profiles: ["zoo_navi"]
+    container_name: zoo_navigator
+    image: elkozmon/zoonavigator:1.1.2
+    ports:
+      - "9000:9000"
+    environment: 
+      HTTP_PORT: 9000
+    depends_on:
+      - zookeeper
+    networks:
+      - ppojin
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:master
+    container_name: kafka-ui
+    ports:
+      - "9090:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: "local"
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka1:9092,kafka2:9092,kafka3:9092"
+      KAFKA_CLUSTERS_0_ZOOKEEPER: "zookeeper:2181"
+      KAFKA_CLUSTERS_0_READONLY: "false"
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8081
+    depends_on: ["kafka1", "kafka2", "kafka3"]
+    networks:
+      - ppojin
+
+  # app1:
+  #   profiles: ["app"]
+  #   container_name: app1
+  #   build: 
+  #     context: ./kafka-tester
+  #     dockerfile: Dockerfile
+  #   ports: [ "8080:8080" ]
+  #   environment:
+  #     SERVER_PORT: 8080
+  #     KAFKA_BOOTSTRAP_SERVERS: kafka1:9092,kafka2:9092,kafka3:9092
+  #     SCHEMA_REGISTRY: http://schema-registry:8081
+  #   depends_on: ["kafka1", "kafka2", "kafka3"]
+  #   networks:
+  #     - ppojin
+
+  # app2:
+  #   profiles: ["app"]
+  #   container_name: app2
+  #   build: 
+  #     context: ./kafka-tester
+  #     dockerfile: Dockerfile
+  #   ports: [ "8082:8080" ]
+  #   environment:
+  #     SERVER_PORT: 8080
+  #     KAFKA_BOOTSTRAP_SERVERS: kafka1:9092,kafka2:9092,kafka3:9092
+  #     SCHEMA_REGISTRY: http://schema-registry:8081
+  #   depends_on: ["kafka1", "kafka2", "kafka3"]
+  #   networks:
+  #     - ppojin
+
+
+  postgres:
+    profiles: [app]
+    container_name: postgres
+    image: postgres:13.5-alpine
+    # restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - ./volume/pgdata:/var/lib/postgresql/data
+      - ./init/pg.sql:/docker-entrypoint-initdb.d/pg.sql
+    command: [ "postgres", "-c", "wal_level=logical" ]
+
+  # warehouse1:
+  #   profiles: ["app"]
+  #   container_name: warehouse1
+  #   build: 
+  #     context: ./warehouse
+  #     dockerfile: Dockerfile
+  #   ports: [ "8090:8080" ]
+  #   environment:
+  #     SERVER_PORT: 8080
+  #     KAFKA_BOOTSTRAP_SERVERS: kafka1:9092,kafka2:9092,kafka3:9092
+  #     SCHEMA_REGISTRY: http://schema-registry:8081
+  #   depends_on: ["kafka1", "kafka2", "kafka3", "postgres"]
+  #   networks:
+  #     - ppojin
+
+  # warehouse2:
+  #   profiles: ["app"]
+  #   container_name: warehouse2
+  #   build: 
+  #     context: ./warehouse
+  #     dockerfile: Dockerfile
+  #   ports: [ "8090:8080" ]
+  #   environment:
+  #     SERVER_PORT: 8080
+  #     KAFKA_BOOTSTRAP_SERVERS: kafka1:9092,kafka2:9092,kafka3:9092
+  #     SCHEMA_REGISTRY: http://schema-registry:8081
+  #   depends_on: ["kafka1", "kafka2", "kafka3", "postgres"]
+  #   networks:
+  #     - ppojin
+
+networks:
+  ppojin:
+    name: ppojin
+    

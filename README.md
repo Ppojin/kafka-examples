@@ -14,6 +14,10 @@ docker-compose -f docker-compose.zookeeper.yaml up -d
 ```
 
 ---
+[spring kafka reference](https://docs.spring.io/spring-kafka/reference/html/#reference)
+[Apache Kafka Support](https://docs.spring.io/spring-boot/docs/current/reference/html/messaging.html#messaging.kafka)
+
+---
 
 [external host](https://levelup.gitconnected.com/kafka-primer-for-docker-how-to-setup-kafka-start-messaging-and-monitor-broker-metrics-in-docker-b4e018e205d1)
 
