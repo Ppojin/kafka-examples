@@ -23,6 +23,10 @@ repositories {
 	}
 }
 
+ext {
+	set('springCloudVersion', "2022.0.4")
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -41,6 +45,15 @@ dependencies {
 	// spock
 	testImplementation 'org.spockframework:spock-core:2.4-M1-groovy-4.0'
 	testImplementation 'org.spockframework:spock-spring:2.4-M1-groovy-4.0'
+
+	// feign
+	implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 tasks.named('test') {
