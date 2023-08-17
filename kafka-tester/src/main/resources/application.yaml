@@ -1,12 +1,15 @@
+server:
+  port: 8080
+
 spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
 
 kafka:
-  bootstrap_servers: localhost:19092,localhost:29092,localhost:39092
+  bootstrap_servers: localhost:19092,localhost:19093,localhost:19094
 
-logging:
-    level:
-      org.apache.kafka.clients.admin.AdminClientConfig: WARN
-      org.apache.kafka.clients.producer.ProducerConfig: WARN
+#logging:
+#    level:
+#      org.apache.kafka.clients.admin.AdminClientConfig: WARN
+#      org.apache.kafka.clients.producer.ProducerConfig: WARN

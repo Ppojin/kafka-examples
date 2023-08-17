@@ -26,7 +26,6 @@ public class ProducerFactoryConfig {
 
     private final String bootstrapServers;
     private final String schemaRegistryServer;
-
     public ProducerFactoryConfig(
             @Value("${kafka.bootstrap_servers:localhost:9092}") String bootstrapServers,
             @Value("${kafka.schema_registry:http://localhost:8081}") String schemaRegistryServer
