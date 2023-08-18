@@ -30,7 +30,7 @@ public class OrderControllerV0 {
         this.jsonTemplate = jsonTemplate;
     }
 
-    @PostMapping("/v0/order")
+    @PostMapping("/order")
     public ResponseEntity<String> produce_v0(
             @RequestBody OrderRequestBodyDTO produceDTO
     ) {

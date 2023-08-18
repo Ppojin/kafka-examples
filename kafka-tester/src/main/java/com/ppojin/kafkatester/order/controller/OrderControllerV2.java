@@ -35,7 +35,7 @@ public class OrderControllerV2 {
         this.schema = orderSchema;
     }
 
-    @PostMapping("/v2/order")
+    @PostMapping("/order")
     public ResponseEntity<String> produce_v2(
             @RequestBody OrderRequestBodyDTO produceDTO
     ) {

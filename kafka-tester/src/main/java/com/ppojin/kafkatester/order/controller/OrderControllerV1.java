@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RestController
-@RequestMapping("/v0")
+@RequestMapping("/v1")
 public class OrderControllerV1 {
 
     private final KafkaTemplate<String, Map<String, Object>> jsonTemplate;
@@ -25,7 +25,7 @@ public class OrderControllerV1 {
         this.jsonTemplate = jsonTemplate;
     }
 
-    @PostMapping("/v1/order")
+    @PostMapping("/order")
     public ResponseEntity<String> produce_v1(
             @RequestBody OrderRequestBodyDTO produceDTO
     ) {
