@@ -2,7 +2,7 @@
 ```sh
 minikube start
 
-minikube image build -t order ../../kafka-tester
+minikube image build -t order ../../producer
 minikube image build -t warehouse ../../consumer
 
 minikube image pull docker.io/provectuslabs/kafka-ui:master

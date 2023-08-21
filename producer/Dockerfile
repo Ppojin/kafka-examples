@@ -14,7 +14,7 @@ FROM openjdk:17-ea-slim
 WORKDIR /app
 
 # 빌더 이미지에서 jar 파일만 복사
-COPY --from=builder /build/build/libs/kafka-tester-0.0.1-SNAPSHOT.jar .
+COPY --from=builder /build/build/libs/producer-0.0.1-SNAPSHOT.jar .
 
 EXPOSE 8080
 
@@ -28,4 +28,4 @@ ENTRYPOINT "java" "-jar" \
     "-Dserver.port=${SERVER_PORT}" \
     "-Dkafka.bootstrap_servers=${KAFKA_BOOTSTRAP_SERVERS}" \
     "-Dkafka.schema_registry=${SCHEMA_REGISTRY}" \
-    "kafka-tester-0.0.1-SNAPSHOT.jar"
+    "producer-0.0.1-SNAPSHOT.jar"
