@@ -1,0 +1,39 @@
+server:
+  port: 8181
+
+spring:
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/postgres
+    user: postgres
+    password: postgres
+
+#  autoconfigure:
+#    exclude:
+#      - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+
+
+kafka:
+  bootstrap-servers: localhost:19092,localhost:19093,localhost:19094
+  group-id: warehouse
+  key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  #      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  #      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+  value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#  properties:
+#    schema.registry.url: http://localhost:8081
+#    spring.deserializer.value.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
