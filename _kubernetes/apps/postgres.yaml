@@ -48,9 +48,6 @@ spec:
         - name: config-volume
           mountPath: /docker-entrypoint-initdb.d
       resources:
-        # requests:
-        #   memory: "64Mi"
-        #   cpu: "256m"
         limits:
           memory: "128Mi"
           cpu: "500m"
@@ -58,10 +55,10 @@ spec:
     - name: data-volume
       persistentVolumeClaim:
         claimName: postgres-data-pvc
-#    - name: data-volume
-#      hostPath:
-#        type: DirectoryOrCreate
-#        path: /ppojin/volume/ppojin-pg
+    # - name: data-volume
+    #   hostPath:
+    #     type: DirectoryOrCreate
+    #     path: /ppojin/volume/ppojin-pg
     - name: config-volume
       configMap:
         name: ppojin-postgres-entrypoint
