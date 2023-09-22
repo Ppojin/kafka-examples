@@ -52,6 +52,7 @@ spec:
           value: "kafka-cluster.default.svc.cluster.local:9092"
         - name: KAFKA_CLUSTERS_0_READONLY
           value: "false"
+        ### listeners.client.protocol: SASL_PLAINTEXT ###
         # - name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
         #   value: SASL_PLAINTEXT
         # - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
@@ -60,6 +61,7 @@ spec:
         #   value: 'org.apache.kafka.common.security.scram.ScramLoginModule required username="user1" password="2LWvvKvodE";'
         # - name: DYNAMIC_CONFIG_ENABLED
         #   value: "true" # not necessary for sasl auth, added for tests
+        ### listeners.client.protocol: SASL_PLAINTEXT ###
 
         ports:
           - containerPort: 8080
