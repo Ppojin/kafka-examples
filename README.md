@@ -1,16 +1,9 @@
-
-
----
-
-https://hub.docker.com/r/confluentinc/cp-kafka/tags
-```
-#.env 
-CONFLUENT_VERSION=7.2.6
-KAFKA_UI_VERSION=master
-```
-
-```sh
-docker-compose -f docker-compose.zookeeper.yaml up -d
+```bash
+minikube start \
+  --cpus='4' --memory='7951' \
+  --ports=30088:30088 \
+  --mount --mount-string=$(pwd)/kubernetes/volume:/ppojin/volume \
+  --addons='metrics-server'
 ```
 
 ---

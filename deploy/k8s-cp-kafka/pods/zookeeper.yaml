@@ -15,6 +15,10 @@ spec:
         mountPath: /datalog
       - name: logs-storage
         mountPath: /logs
+    resources:
+      limits:
+        memory: "256Mi"
+        cpu: "500m"
   volumes:
     - name: data-storage
       hostPath:

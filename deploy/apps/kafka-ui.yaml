@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-ui-headless
+spec:
+  ports:
+    - port: 8080
+      name: broker
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: kafka-ui
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-ui
+spec:
+  ports:
+    - name: http
+      port: 8080
+      nodePort: 30088
+  selector:
+    app: kafka-ui
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-ui-dp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-ui
+  template:
+    metadata:
+      name: kafka-ui-pod
+      labels:
+        app: kafka-ui
+    spec:
+      containers:
+      - name: app
+        image: provectuslabs/kafka-ui:master
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: KAFKA_CLUSTERS_0_NAME
+          value: "local"
+        - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+          value: "kafka-cluster.default.svc.cluster.local:9092"
+        - name: KAFKA_CLUSTERS_0_READONLY
+          value: "false"
+        # - name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
+        #   value: SASL_PLAINTEXT
+        # - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
+        #   value: PLAIN
+        # - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG
+        #   value: 'org.apache.kafka.common.security.scram.ScramLoginModule required username="user1" password="2LWvvKvodE";'
+        # - name: DYNAMIC_CONFIG_ENABLED
+        #   value: "true" # not necessary for sasl auth, added for tests
+
+        ports:
+          - containerPort: 8080
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+          # requests:
+          #   memory: "64Mi"
+          #   cpu: "250m"

@@ -33,7 +33,6 @@ helm repo rm confluentinc
 helm repo add confluentinc https://ppojin.github.io/cp-helm-charts/
 helm repo update
 helm install --values kubernetes/cp-kafka/zookeeper.yaml kafka confluentinc/cp-helm-charts
-kubectl apply -f kubernetes/apps/kafka-ui.yaml
 ```
 
 ## 포트포워딩

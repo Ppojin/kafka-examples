@@ -1,0 +1,22 @@
+replicaCount: '3'
+
+serviceAccount:
+  create: true
+
+listeners:
+  client:
+    protocol: PLAINTEXT # default: SASL_PLAINTEXT
+
+externalAccess:
+  autoDiscovery:
+    enabled: true
+  broker:
+    service:
+      type: NodePort
+  controller:
+    service:
+      type: NodePort
+  enabled: true
+    
+rbac:
+  create: true

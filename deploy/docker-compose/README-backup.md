@@ -1,3 +1,14 @@
+https://hub.docker.com/r/confluentinc/cp-kafka/tags
+```
+#.env 
+CONFLUENT_VERSION=7.2.6
+KAFKA_UI_VERSION=master
+```
+
+```sh
+docker-compose -f docker-compose.zookeeper.yaml up -d
+```
+
 ## pull docker images
 ```sh
 docker pull openjdk:17-ea-slim
